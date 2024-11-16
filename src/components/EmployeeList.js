@@ -1,6 +1,6 @@
 // src/components/EmployeeList.js
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, Button, StyleSheet, Image } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { db } from '../firebaseConfig';
 import { collection, onSnapshot } from "firebase/firestore";
 
@@ -22,16 +22,20 @@ const EmployeeList = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>Lista de Empleados</Text>
       <FlatList
         data={employees}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <TouchableOpacity style={styles.employeeItem} onPress={() => navigation.navigate('EmployeeDetails', { employeeId: item.id })}>
+          <TouchableOpacity
+            style={styles.employeeCard}
+            onPress={() => navigation.navigate('EmployeeDetails', { employeeId: item.id })}
+          >
             {item.fotoPerfil ? (
               <Image source={{ uri: item.fotoPerfil }} style={styles.image} />
             ) : (
               <View style={styles.placeholderImage}>
-                <Text>Sin Imagen</Text>
+                <Text style={styles.imageText}>Sin Imagen</Text>
               </View>
             )}
             <View style={styles.textContainer}>
@@ -40,8 +44,14 @@ const EmployeeList = ({ navigation }) => {
             </View>
           </TouchableOpacity>
         )}
+        contentContainerStyle={styles.listContent}
       />
-      <Button title="Agregar Nuevo Empleado" onPress={() => navigation.navigate('AddEmployee')} />
+      <TouchableOpacity
+        style={styles.addButton}
+        onPress={() => navigation.navigate('AddEmployee')}
+      >
+        <Text style={styles.addButtonText}>+ Agregar Nuevo Empleado</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -49,30 +59,49 @@ const EmployeeList = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
-    backgroundColor: '#f9f9f9',
+    backgroundColor: '#F4F6F8',
   },
-  employeeItem: {
+  title: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#333',
+    textAlign: 'center',
+    marginVertical: 15,
+  },
+  listContent: {
+    paddingHorizontal: 10,
+  },
+  employeeCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 10,
-    borderBottomWidth: 1,
-    borderColor: '#ddd',
+    backgroundColor: '#fff',
+    padding: 15,
+    marginBottom: 10,
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   image: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginRight: 10,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    marginRight: 15,
   },
   placeholderImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: '#eee',
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: '#DDD',
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 10,
+    marginRight: 15,
+  },
+  imageText: {
+    fontSize: 12,
+    color: '#888',
   },
   textContainer: {
     flex: 1,
@@ -80,10 +109,23 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 18,
     fontWeight: 'bold',
+    color: '#333',
   },
   status: {
     fontSize: 14,
-    color: '#555',
+    color: '#777',
+  },
+  addButton: {
+    backgroundColor: '#4CAF50',
+    padding: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+    margin: 15,
+  },
+  addButtonText: {
+    fontSize: 18,
+    color: '#FFF',
+    fontWeight: 'bold',
   },
 });
 

@@ -38,25 +38,25 @@ const StatisticsScreen = () => {
     datasets: [
       {
         data: [presentes, ausentes],
-      }
-    ]
+      },
+    ],
   };
 
   const pieChartData = [
     {
       name: "Presentes",
       population: presentes,
-      color: "rgba(0, 128, 0, 0.8)",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 15
+      color: "rgba(40, 167, 69, 0.8)", // Verde
+      legendFontColor: "#333",
+      legendFontSize: 14,
     },
     {
       name: "Ausentes",
       population: ausentes,
-      color: "rgba(255, 0, 0, 0.8)",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 15
-    }
+      color: "rgba(220, 53, 69, 0.8)", // Rojo
+      legendFontColor: "#333",
+      legendFontSize: 14,
+    },
   ];
 
   return (
@@ -64,15 +64,15 @@ const StatisticsScreen = () => {
       <Text style={styles.title}>Estadísticas de Asistencia</Text>
 
       <View style={styles.chartContainer}>
-        <Text style={styles.chartTitle}>Asistencia de Empleados</Text>
+        <Text style={styles.chartTitle}>Asistencia General</Text>
         <BarChart
           data={barChartData}
           width={screenWidth * 0.9}
           height={220}
           chartConfig={{
             backgroundColor: "#fff",
-            backgroundGradientFrom: "#6a11cb",
-            backgroundGradientTo: "#2575fc",
+            backgroundGradientFrom: "#3b82f6", // Azul suave
+            backgroundGradientTo: "#2563eb",   // Azul profundo
             decimalPlaces: 0,
             color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
             labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
@@ -80,6 +80,7 @@ const StatisticsScreen = () => {
           style={styles.chart}
         />
       </View>
+
 
       <View style={styles.chartContainer}>
         <Text style={styles.chartTitle}>Distribución de Asistencia</Text>
@@ -97,9 +98,14 @@ const StatisticsScreen = () => {
         />
       </View>
 
-      <View style={styles.chartContainer}>
-        <Text style={styles.chartTitle}>Horas Promedio Trabajadas</Text>
-        <Text style={styles.statValue}>{horasPromedio} hrs</Text>
+      <View style={styles.statsContainer}>
+        <Text style={styles.statsTitle}>Horas Promedio Trabajadas</Text>
+        <Text style={styles.statsValue}>{horasPromedio} hrs</Text>
+      </View>
+
+      <View style={styles.statsContainer}>
+        <Text style={styles.statsTitle}>Total de Empleados</Text>
+        <Text style={styles.statsValue}>{totalEmpleados}</Text>
       </View>
     </ScrollView>
   );
@@ -108,30 +114,66 @@ const StatisticsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#f9f9f9',
     alignItems: 'center',
   },
   title: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: 'bold',
+    color: '#333',
     marginBottom: 20,
   },
   chartContainer: {
-    marginVertical: 10,
+    marginVertical: 15,
     alignItems: 'center',
+    backgroundColor: '#fff',
+    padding: 10,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 3,
+    width: '100%',
   },
   chartTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 5,
+    marginBottom: 10,
+    color: '#333',
   },
   chart: {
-    borderRadius: 10,
+    borderRadius: 8,
   },
-  statValue: {
+  statsContainer: {
+    marginVertical: 10,
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    padding: 15,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 3,
+    width: '100%',
+  },
+  statsTitle: {
+    fontSize: 16,
+    color: '#555',
+    fontWeight: 'bold',
+  },
+  statsValue: {
     fontSize: 20,
     fontWeight: 'bold',
     color: '#333',
+    marginTop: 5,
   },
 });
 

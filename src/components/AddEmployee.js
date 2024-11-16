@@ -1,4 +1,3 @@
-// src/components/AddEmployeeScreen.js
 import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView, Text, Image, TouchableOpacity, Alert } from 'react-native';
 import { db } from '../firebaseConfig';
@@ -118,9 +117,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    fontSize: 26,
+    fontSize: 24,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#1F2937',
     marginBottom: 20,
     textAlign: 'center',
   },
@@ -129,15 +128,15 @@ const styles = StyleSheet.create({
     height: 120,
     alignSelf: 'center',
     marginBottom: 20,
-    backgroundColor: '#EFEFEF',
+    backgroundColor: '#E5E7EB',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 60,
-    borderColor: '#D1D5DB',
+    borderColor: '#9CA3AF',
     borderWidth: 1,
   },
   imageText: {
-    color: '#999',
+    color: '#6B7280',
   },
   imagePreview: {
     width: 120,
@@ -151,10 +150,12 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     marginBottom: 15,
     backgroundColor: '#FFF',
+    height: 55, // Ajusta la altura del contenedor para centrar el Picker
+    justifyContent: 'center', // Centra verticalmente el Picker
   },
   picker: {
-    height: 45,
-    color: '#333',
+    height: '100%', // Asegura que el Picker ocupe toda la altura del contenedor
+    color: '#374151',
   },
   addButton: {
     backgroundColor: '#4CAF50',
@@ -180,7 +181,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 5,
-    color: '#333',
+    color: '#4B5563',
     marginTop: 10,
   },
 });

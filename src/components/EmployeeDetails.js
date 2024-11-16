@@ -1,6 +1,6 @@
 // src/components/EmployeeDetails.js
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, Image, StyleSheet, Alert, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TextInput, Image, StyleSheet, Alert, TouchableOpacity, ScrollView } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { db } from '../firebaseConfig';
 import { doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
@@ -70,117 +70,151 @@ const EmployeeDetails = ({ route, navigation }) => {
   };
 
   return (
-    employee ? (
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
+      {employee ? (
+        <>
           {imageUri && (
             <TouchableOpacity onPress={isEditing ? seleccionarImagen : null}>
               <Image source={{ uri: imageUri }} style={styles.image} />
             </TouchableOpacity>
           )}
-          
+
           <Text style={styles.label}>ID del Empleado:</Text>
           <TextInput
-            style={[styles.input, { backgroundColor: isEditing ? '#fff' : '#f0f0f0' }]}
+            style={[styles.input, { backgroundColor: '#f0f0f0' }]}
             value={employee.empleadoId.toString()}
             editable={false}
           />
-          
+
           <Text style={styles.label}>Nombre:</Text>
           <TextInput
-            style={[styles.input, { backgroundColor: isEditing ? '#fff' : '#f0f0f0' }]}
+            style={styles.input}
             value={employee.nombre}
             onChangeText={(text) => setEmployee({ ...employee, nombre: text })}
             editable={isEditing}
           />
-          
+
           <Text style={styles.label}>Estado de Asistencia:</Text>
-          {isEditing ? (
-            <View style={styles.pickerContainer}>
-              <Picker
-                selectedValue={employee.estadoAsistencia}
-                onValueChange={(itemValue) => setEmployee({ ...employee, estadoAsistencia: itemValue })}
-                style={styles.picker}
-              >
-                <Picker.Item label="Ausente" value="Ausente" />
-                <Picker.Item label="Presente" value="Presente" />
-              </Picker>
-            </View>
-          ) : (
-            <TextInput
-              style={[styles.input, { backgroundColor: '#f0f0f0' }]}
-              value={employee.estadoAsistencia}
-              editable={false}
-            />
-          )}
+          <View style={styles.pickerContainer}>
+            <Picker
+              selectedValue={employee.estadoAsistencia}
+              onValueChange={(itemValue) => setEmployee({ ...employee, estadoAsistencia: itemValue })}
+              enabled={isEditing}
+              style={styles.picker}
+            >
+              <Picker.Item label="Ausente" value="Ausente" />
+              <Picker.Item label="Presente" value="Presente" />
+            </Picker>
+          </View>
 
           <Text style={styles.label}>Horas Trabajadas:</Text>
           <TextInput
-            style={[styles.input, { backgroundColor: isEditing ? '#fff' : '#f0f0f0' }]}
-            value={employee.horasTrabajadas ? employee.horasTrabajadas.toString() : ""}
-            onChangeText={(text) => setEmployee({ ...employee, horasTrabajadas: text ? parseInt(text) : "" })}
+            style={styles.input}
+            value={employee.horasTrabajadas.toString()}
+            onChangeText={(text) => setEmployee({ ...employee, horasTrabajadas: parseInt(text) })}
             editable={isEditing}
             keyboardType="numeric"
           />
 
           <Text style={styles.label}>Puesto:</Text>
           <TextInput
-            style={[styles.input, { backgroundColor: isEditing ? '#fff' : '#f0f0f0' }]}
+            style={styles.input}
             value={employee.puesto}
             onChangeText={(text) => setEmployee({ ...employee, puesto: text })}
             editable={isEditing}
           />
 
           {isEditing ? (
-            <Button title="Guardar Cambios" onPress={updateEmployee} />
+            <TouchableOpacity style={styles.saveButton} onPress={updateEmployee}>
+              <Text style={styles.buttonText}>Guardar Cambios</Text>
+            </TouchableOpacity>
           ) : (
-            <Button title="Editar" onPress={enableEditing} />
+            <TouchableOpacity style={styles.editButton} onPress={enableEditing}>
+              <Text style={styles.buttonText}>Editar</Text>
+            </TouchableOpacity>
           )}
-          
-          <Button title="Eliminar Empleado" onPress={deleteEmployee} color="red" />
-        </View>
-      </ScrollView>
-    ) : <Text>Cargando...</Text>
+
+          <TouchableOpacity style={styles.deleteButton} onPress={deleteEmployee}>
+            <Text style={styles.buttonText}>Eliminar Empleado</Text>
+          </TouchableOpacity>
+        </>
+      ) : (
+        <Text>Cargando...</Text>
+      )}
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  scrollContainer: {
-    flexGrow: 1,
-    paddingBottom: 20,
-  },
   container: {
-    flex: 1,
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#f9f9f9',
+    alignItems: 'center',
   },
   label: {
     fontSize: 16,
     fontWeight: 'bold',
     marginTop: 10,
+    alignSelf: 'flex-start',
   },
   input: {
-    borderBottomWidth: 1,
+    width: '100%',
+    borderWidth: 1,
     borderColor: '#ccc',
-    padding: 8,
+    padding: 10,
     marginBottom: 15,
+    borderRadius: 5,
+    fontSize: 16,
+    backgroundColor: '#fff',
   },
   pickerContainer: {
+    width: '100%',
     borderWidth: 1,
-    borderColor: '#aaa',
-    borderRadius: 8,
-    overflow: 'hidden',
+    borderColor: '#ccc',
+    borderRadius: 5,
     marginBottom: 15,
+    backgroundColor: '#fff',
+    justifyContent: 'center',
   },
   picker: {
-    height: 40,
+    height: 50,
+    width: '100%',
   },
   image: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: 120,
+    height: 120,
+    borderRadius: 60,
     alignSelf: 'center',
     marginBottom: 20,
+  },
+  saveButton: {
+    backgroundColor: '#28a745',
+    padding: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 20,
+    width: '100%',
+  },
+  editButton: {
+    backgroundColor: '#007bff',
+    padding: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 10,
+    width: '100%',
+  },
+  deleteButton: {
+    backgroundColor: '#dc3545',
+    padding: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 10,
+    width: '100%',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 
